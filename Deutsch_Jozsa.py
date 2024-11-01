@@ -3,11 +3,13 @@ from prettytable import PrettyTable
 import math
 import sys
 
+# Implementa la clase Hadamard que permite aplicar la compuerta de Hadamard a un número de qubits n
 class Hadamard():
     def __init__(self):
         self.Hadamard = np.array([[1,1],[1,-1]]) / np.sqrt(2)
         self.matrix = self.Hadamard
 
+    # Se genera la matriz de Hadamard de n qubits por medio de producto tensorial sucesivo
     def add_qubits(self, num_qubits):
         for qubit in range(num_qubits - 1):
             self.matrix = np.kron(self.Hadamard, self.matrix)
@@ -15,6 +17,8 @@ class Hadamard():
     def apply(self, state):
         return self.matrix @ state
 
+# Implementa la clase X_last_qubit que permite aplicar la compuerta X al último qubit de un número de qubits n
+# Se utiliza para negar el qubit de ancilla
 class X_last_qubit():
     def __init__(self, num_qubits):
         self.X = np.array([[0,1],[1,0]])
@@ -24,6 +28,8 @@ class X_last_qubit():
     def apply(self, state):
         return self.matrix @ state
 
+# Se obtiene la función oraculo utilizada en el algoritmo en forma de matriz
+# Se recibe la funcion como numero binario y la dimension del espacio de Hilbert en que se está trabajando
 def get_U(f, dim_hilbert):
     U = np.zeros((dim_hilbert, dim_hilbert))
     for i in range(dim_hilbert//2):
@@ -39,19 +45,24 @@ def get_U(f, dim_hilbert):
         U[i+1][u_applied2] = 1
     return U
 
+# Se ejecuta el algoritmo de Deutsch-Jozsa para una función f y un número de qubits n
+# Retorna el vector con el estado del sistema
 def Deutsch_Jocza(f, n):
     num_qubits = n
     dim_hilbert = 2 ** num_qubits
 
+    # Se crean las compuertas cuanticas a utilizar
     H = Hadamard()
     H.add_qubits(num_qubits)
     X = X_last_qubit(num_qubits)
 
     U = get_U(f, dim_hilbert)
 
+    # Se crean el vector de estados iniciales
     s0 = np.zeros(dim_hilbert)
     s0[0] = 1
 
+    # Applicación del algoritmo
     s1 = X.apply(s0)
     s2 = H.apply(s1)
     s3 = U @ s2
@@ -111,8 +122,6 @@ def run_all_DeutschJozsa(n):
 
     return table, balanced_count
 
-
-
 def combinatoric_balanced(len_f):
     result = math.factorial(len_f)
     result = result / (math.factorial(len_f // 2) ** 2)
@@ -121,7 +130,7 @@ def combinatoric_balanced(len_f):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python Deutsch_Jozsa.py <number_of_qubits>")
+        print("Usage: python Deutsch_Jozsa.py <input_element_length>")
         sys.exit(1)
 
     try:
