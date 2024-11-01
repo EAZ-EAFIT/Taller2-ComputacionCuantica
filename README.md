@@ -9,7 +9,7 @@ Si se utiliza pip, se puede usar el comando:
   pip install -r requirements.txt
 ```
 ## Ejecución
-Para evaluar el algoritmo de Deutsch-Jozsa en todas las funciones $\\{1, 0\\}^n$ -> $\\{0,1\\}$. Es decir, las funciones de strings de bits de longitud n.
+El programa evalúa el algoritmo de Deutsch-Jozsa en todas las funciones de bits de longitud n es decir, todas las funciones $\\{1, 0\\}^n$ -> $\\{0,1\\}$. Para ejecutarlo se debe correr lo siguiente:
    ```bash
   python Deutsch_Jozsa.py <input_element_length>
 ```
