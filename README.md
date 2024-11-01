@@ -2,9 +2,6 @@
 ### Esteban Álvarez Zuluaga
 
 ---
-
-## **Guia de Uso**
-
 ## Instalación
 Descargar Python 3.11.9 y las dependencias expuestas en `requirements.txt`.
 Si se utiliza pip, se puede usar el comando:
