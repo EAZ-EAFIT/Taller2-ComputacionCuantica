@@ -110,8 +110,8 @@ def run_all_DeutschJozsa(n):
             balanced_count += 1
 
         prob_0_or_1_result = prob_0_or_1(result_state)
-        prob_0 = str(int(round(prob_0_or_1_result[0], 0) * 100)) + "%"
-        prob_1 = str(int(round(prob_0_or_1_result[1], 0) * 100)) + "%"
+        prob_0 = str(round(prob_0_or_1_result[0] * 100, 1)) + "%"
+        prob_1 = str(round(prob_0_or_1_result[1] * 100, 1)) + "%"
 
         if classical_measure == "balanced" and measure == "constant":
             print("Error: Función balanceada clasificada como constante")
@@ -134,15 +134,15 @@ def main():
         sys.exit(1)
 
     try:
-        num_qubits = int(sys.argv[1])
+        n = int(sys.argv[1])
     except ValueError:
         print("The number of qubits must be an integer.")
         sys.exit(1)
 
-    res = run_all_DeutschJozsa(num_qubits)
+    res = run_all_DeutschJozsa(n)
     print(res[0])
     print(f"Total de funciones balanceadas: {res[1]}")
-    print(f"Total de funciones balanceadas real: {combinatoric_balanced(2 ** num_qubits)}")
+    print(f"Total de funciones balanceadas real: {combinatoric_balanced(2 ** n)}")
 
 if __name__ == "__main__":
     main()
