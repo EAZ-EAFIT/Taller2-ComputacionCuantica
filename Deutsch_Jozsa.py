@@ -69,17 +69,13 @@ def Deutsch_Jocza(f, n):
     s4 = H.apply(s3)
     return s4
 
-def balanced_or_constant(state):
-    if abs(state[0]) > 1e-10 or abs(state[1]) > 1e-10:
-        return "constant"
-    else:
-        return "balanced"
-    
+# Calculate the probability that the state is (|0>⊗n)⊗|y> or not
 def prob_0_or_1(state):
     prob_0 = state[0] ** 2 + state[1] ** 2
     prob_1 = 1 - prob_0
     return prob_0, prob_1
-    
+
+# Count the amount of ones and basedd on it determine the true result
 def classical_oracle(f, n):
     one_amount = number_of_ones(f)
     if one_amount == n/2:
@@ -88,10 +84,13 @@ def classical_oracle(f, n):
         return "constant"
     else:
         return "neither"
-    
+
+# Count the number of ones in a binary string
 def number_of_ones(n):
     return bin(n).count('1')
 
+# Iterate over all possible functions on binary strings of length n and apply Deutsch-Jozsa
+# Return a table with the results
 def run_all_DeutschJozsa(n):
     table = PrettyTable()
     table.field_names = ["Función", "Es balanceada", "Es constante", "Numero bits en 1", "P(|0>⊗n)", "1 - P(|0>⊗n)"]
@@ -103,7 +102,6 @@ def run_all_DeutschJozsa(n):
 
     for i in range(num_functions):
         result_state = Deutsch_Jocza(i, num_qubits) 
-        measure = balanced_or_constant(result_state)
         classical_measure = classical_oracle(i, len_f)  
 
         if classical_measure == 'balanced':
@@ -113,20 +111,9 @@ def run_all_DeutschJozsa(n):
         prob_0 = str(round(prob_0_or_1_result[0] * 100, 1)) + "%"
         prob_1 = str(round(prob_0_or_1_result[1] * 100, 1)) + "%"
 
-        if classical_measure == "balanced" and measure == "constant":
-            print("Error: Función balanceada clasificada como constante")
-
-        # result = "0: " + str(prob_0) + "%" + " 1: " + str(prob_1) + "%" 
-
         table.add_row([f"{i:0{len_f}b}", "Sí" if (classical_measure == 'balanced') else "No", "Sí" if (classical_measure == 'constant') else "No", number_of_ones(i), prob_0, prob_1])
 
-    return table, balanced_count
-
-def combinatoric_balanced(len_f):
-    result = math.factorial(len_f)
-    result = result / (math.factorial(len_f // 2) ** 2)
-    return result
-
+    return table
 
 def main():
     if len(sys.argv) != 2:
@@ -140,9 +127,7 @@ def main():
         sys.exit(1)
 
     res = run_all_DeutschJozsa(n)
-    print(res[0])
-    print(f"Total de funciones balanceadas: {res[1]}")
-    print(f"Total de funciones balanceadas real: {combinatoric_balanced(2 ** n)}")
+    print(res)
 
 if __name__ == "__main__":
     main()
