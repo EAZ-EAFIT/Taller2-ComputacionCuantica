@@ -98,14 +98,10 @@ def run_all_DeutschJozsa(n):
     num_functions = 2 ** (2 ** n)
     len_f = 2 ** n
     num_qubits = n + 1
-    balanced_count = 0
 
     for i in range(num_functions):
-        result_state = Deutsch_Jocza(i, num_qubits) 
-        classical_measure = classical_oracle(i, len_f)  
-
-        if classical_measure == 'balanced':
-            balanced_count += 1
+        result_state = Deutsch_Jocza(i, num_qubits)
+        classical_measure = classical_oracle(i, len_f) 
 
         prob_0_or_1_result = prob_0_or_1(result_state)
         prob_0 = str(round(prob_0_or_1_result[0] * 100, 1)) + "%"
