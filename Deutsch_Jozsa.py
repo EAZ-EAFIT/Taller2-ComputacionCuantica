@@ -119,7 +119,7 @@ def main():
     try:
         n = int(sys.argv[1])
     except ValueError:
-        print("The number of qubits must be an integer.")
+        print("Input element length must be an integer.")
         sys.exit(1)
 
     res = run_all_DeutschJozsa(n)
